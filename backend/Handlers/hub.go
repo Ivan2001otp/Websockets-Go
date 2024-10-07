@@ -1,6 +1,9 @@
 package handlers
 
-import ("Backend/Model")
+import (
+	model "Backend/Model"
+)
+
 //hub maintains the set of active clients and broadcasts messages to clietns
 
 type Hub struct{

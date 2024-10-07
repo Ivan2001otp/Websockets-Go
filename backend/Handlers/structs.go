@@ -1,6 +1,7 @@
-package model
+package handlers
 
-import "github.com/gorilla/websocket"
+import ("github.com/gorilla/websocket"	
+)
 
 type UserDetailsStruct struct {
 	ID       string `bson:"_id,omit_empty"`
