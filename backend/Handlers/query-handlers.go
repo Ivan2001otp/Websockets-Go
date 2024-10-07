@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"Backend/Utils"
-	config "Backend/config"
+	 "Backend/config"
 	constants "Backend/constants"
 	"context"
 	"errors"
