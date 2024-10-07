@@ -1,24 +1,22 @@
 package handlers
 
-import (
-	model "Backend/Model"
-)
+
 
 //hub maintains the set of active clients and broadcasts messages to clietns
 
 type Hub struct{
-	clients map[*model.Client]bool;
-	register chan *model.Client
-	unregister chan *model.Client;
+	clients map[*Client]bool;
+	register chan *Client
+	unregister chan *Client;
 }
 
 
 //new instance of hub
 func NewHub() *Hub{
 	return &Hub{
-		register: make(chan *model.Client),
-		unregister: make(chan *model.Client),
-		clients: make(map[*model.Client]bool),
+		register: make(chan *Client),
+		unregister: make(chan *Client),
+		clients: make(map[*Client]bool),
 	}
 }
 

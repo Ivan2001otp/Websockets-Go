@@ -229,6 +229,42 @@ func BroadcastSocketEventToAllClient(hub *Hub,payload SocketEventStruct){
 	}
 }
 
+
+func HandleUserRegisterEvent(hub *Hub,client *Client){
+	hub.clients[client]=true;
+	handleSocketPayloadEvents(client,SocketEventStruct{
+		EventName: "join",
+		EventPayload: client.userID,
+	})
+}
+
+func HandleUserDisconnectEvent(hub *Hub,client *Client){
+	_,ok := hub.clients[client];
+
+	if ok {
+		delete(hub.clients,client)
+		close(client.send)
+
+		handleSocketPayloadEvents(client,SocketEventStruct{
+			EventName: "disconnect",
+			EventPayload: client.userID,
+		})
+	}
+}
+
+func EmitToSpecificClient(hub *Hub,payload SocketEventStruct,userID string){
+	for client := range hub.clients{
+		if client.userID == userID{
+			select{
+			case client.send<-payload:
+			default:
+				close(client.send);
+				delete(hub.clients,client)
+			}
+		}
+	}
+}
+
 //emits the socket evetns to all socket users,except for the user who is emitting .
 func BroadcastSocketEventToAllClientExceptMe(hub *Hub,payload SocketEventStruct,myUserID string){
 	for client := range hub.clients{
